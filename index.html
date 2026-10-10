@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DH FESTIVAL - Festival Result Portal</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23d71920'/%3E%3Ccircle cx='50' cy='50' r='34' fill='white'/%3E%3Ctext x='50' y='62' text-anchor='middle' font-size='34' font-weight='800' fill='%23d71920' font-family='Arial'%3EDH%3C/text%3E%3C/svg%3E">
+<style>
+:root{--bg:#ffffff;--card:#fff4f4;--ink:#2a0a0a;--mute:#7a5555;--gold:#d71920;--g:#ff7b7b;--line:#f2cccc}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+nav{position:sticky;top:0;z-index:9;display:flex;align-items:center;justify-content:space-between;padding:14px 5%;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:1px;color:var(--gold);cursor:pointer}
+.logo .lg{width:44px;height:44px;flex:none}.biglogo .lg{width:120px;height:120px;filter:drop-shadow(0 8px 18px rgba(215,25,32,.3))}.ar{font-size:28px;font-weight:800;letter-spacing:6px;color:var(--gold);font-family:Arial,sans-serif}.arh{font-family:Amiri,"Noto Naskh Arabic","Traditional Arabic",serif!important}.logo small{display:block;font-size:10px;color:var(--mute);font-weight:500;letter-spacing:2px}
+.links{display:flex;gap:6px}
+.links a{padding:8px 16px;border-radius:30px;color:var(--mute);text-decoration:none;font-size:14px;cursor:pointer;transition:.2s}
+.links a:hover{color:var(--ink)}
+.links a.on{background:var(--gold);color:#fff;font-weight:700}
+.burger{display:none;background:none;border:0;color:var(--ink);font-size:26px}
+section.page{display:none;padding:50px 5%;max-width:1100px;margin:auto;animation:f .4s}
+section.page.show{display:block}
+@keyframes f{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+.hero{text-align:center;padding:60px 0}
+.hero .tag{display:inline-block;padding:6px 16px;border:1px solid var(--gold);color:var(--gold);border-radius:30px;font-size:12px;letter-spacing:2px}
+.hero h1{font-size:clamp(34px,7vw,64px);margin:20px 0 10px;background:linear-gradient(90deg,var(--gold),#7a0c10,var(--gold));-webkit-background-clip:text;color:transparent}
+.hero p{color:var(--mute);max-width:520px;margin:auto}
+.search{display:flex;gap:10px;max-width:520px;margin:30px auto 8px;background:var(--card);padding:8px;border-radius:50px;border:1px solid var(--line)}
+.search input{flex:1;background:none;border:0;outline:0;color:var(--ink);padding:10px 18px;font-size:16px}
+.btn{background:var(--gold);color:#fff;border:0;border-radius:40px;padding:12px 26px;font-weight:700;cursor:pointer}
+.err{color:#b00020;font-size:13px;min-height:20px;text-align:center}
+.hint{color:var(--mute);font-size:12px;text-align:center}
+h2{font-size:28px;margin-bottom:6px}
+.sub{color:var(--mute);margin-bottom:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;transition:.2s}
+.card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.no{color:var(--gold);font-weight:800;font-size:13px;letter-spacing:1px}
+.card h3{margin:6px 0 4px}
+.cat{font-size:12px;color:var(--mute)}
+.win{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+.win:first-of-type{margin-top:12px}
+.medal{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;color:#111}
+.m1{background:#f2b705}.m2{background:#c5ccd1}.m3{background:#cd8a5a}
+.av{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);background:var(--line);display:grid;place-items:center;font-weight:800;color:var(--gold);font-size:15px;flex:none;overflow:hidden}.av img{width:100%;height:100%;object-fit:cover}.win span{flex:1}.win b{color:var(--gold)}
+.fl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}.fl button{background:var(--card);border:1px solid var(--line);color:var(--mute);padding:8px 20px;border-radius:30px;cursor:pointer;font-size:14px}.fl button.on{background:var(--gold);color:#fff;font-weight:700;border-color:var(--gold)}.lb{max-width:760px;margin:30px auto 0}.lb h3{text-align:center;margin-bottom:16px;letter-spacing:2px;font-size:14px;color:var(--gold)}.tr{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 20px;margin-bottom:12px}.tr:first-of-type{border-color:var(--gold)}.tr .rk{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#111}.tr .nm{width:110px;font-weight:700}.tr .bar{flex:1;height:10px;background:var(--line);border-radius:10px;overflow:hidden}.tr .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g),var(--gold));border-radius:10px;transition:width 1s}.tr .pt{font-size:24px;font-weight:800;color:var(--gold);min-width:56px;text-align:right}.tr .pt small{display:block;font-size:10px;color:var(--mute);font-weight:500}.t3{margin-bottom:30px}.t3 h3{font-size:14px;letter-spacing:2px;color:var(--gold);margin-bottom:14px}.pd{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.pc{background:linear-gradient(160deg,var(--card),#fff);border:1px solid var(--line);border-radius:20px;padding:22px 12px;text-align:center}.pc.r1{border-color:var(--gold);box-shadow:0 0 30px rgba(215,25,32,.18)}.pc .av{width:68px;height:68px;margin:0 auto 10px;font-size:20px}.pc .bd{display:inline-block;padding:3px 12px;border-radius:20px;font-size:11px;font-weight:800;color:#111;margin-bottom:8px}.pc b{display:block;font-size:16px}.pc small{color:var(--mute);display:block;margin:2px 0 8px}.pc em{font-style:normal;color:var(--gold);font-weight:800;font-size:20px}@media(max-width:600px){.pd{grid-template-columns:1fr}}.back{background:none;border:1px solid var(--line);color:var(--mute);padding:8px 18px;border-radius:30px;cursor:pointer;margin-bottom:20px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px}
+.tile{position:relative;aspect-ratio:4/3;border-radius:16px;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:var(--card)}.tile img{width:100%;height:100%;object-fit:cover;transition:.4s}.tile:hover img{transform:scale(1.08)}.tile span{color:#fff;position:absolute;left:0;right:0;bottom:0;padding:22px 12px 10px;font-size:13px;background:linear-gradient(transparent,rgba(0,0,0,.75))}#lb{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,.92);place-items:center;padding:20px}#lb.on{display:grid}#lb img{max-width:100%;max-height:85vh;border-radius:12px}#lb b{color:#fff;position:absolute;top:18px;right:26px;font-size:34px;cursor:pointer}
+.about p{color:var(--mute);line-height:1.8;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px}@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}}
+.vn{font-size:12px;color:var(--gold);margin-top:6px}.vg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:14px}.vg div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}.vg b{display:block}.vg small{color:var(--mute)}.vl{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}.vl ul{list-style:none;margin-top:10px}.vl li{padding:8px 0;border-top:1px solid var(--line);font-size:14px;cursor:pointer}.vl li:hover{color:var(--gold)}.vl li span{color:var(--gold);font-weight:700;margin-right:4px}.vl li em{font-style:normal;color:var(--mute);font-size:12px;float:right}.about h3{margin-top:30px;color:var(--gold);letter-spacing:2px;font-size:14px}
+.stats div{background:var(--card);border-radius:16px;padding:20px;text-align:center;border:1px solid var(--line)}
+.stats b{display:block;font-size:30px;color:var(--gold)}
+.ch{font-style:normal;font-size:11px;background:var(--gold);color:#fff;border-radius:6px;padding:1px 6px;margin-left:4px}form.c select{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--ink);font-size:15px;font-family:inherit}.pk{display:grid;gap:6px;max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card)}.ck{display:flex;gap:10px;align-items:center;font-size:14px;cursor:pointer}.ck input{width:auto;padding:0}.pk h4{margin:0 0 4px;color:var(--gold);font-size:13px;letter-spacing:1px}.rhero{background:linear-gradient(135deg,#d71920,#7a0c10);color:#fff;border-radius:22px;padding:34px 28px;margin-bottom:24px;text-align:center}.rhero h2{margin:12px 0 6px;font-size:clamp(26px,5vw,38px)}.rhero p{margin:0;opacity:.9}.rhero .tag{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4)}.rg{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}.ri{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:sticky;top:90px}.ri h3{margin:0 0 12px;color:var(--gold);letter-spacing:2px;font-size:14px}.ri ol{padding-left:18px;line-height:1.9;color:var(--mute)}.rc{margin-top:16px;text-align:center;border-top:1px solid var(--line);padding-top:16px}.rc b{display:block;font-size:40px;color:var(--gold)}.rdone{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px;text-align:center}.rdone .ok{width:64px;height:64px;border-radius:50%;background:#1a7f4b;color:#fff;font-size:34px;display:grid;place-items:center;margin:0 auto 14px}@media(max-width:760px){.rg{grid-template-columns:1fr}.ri{position:static}}form.c{display:grid;gap:12px;max-width:520px}
+form.c input,form.c textarea{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--ink);font-size:15px;font-family:inherit;outline:0}
+footer{text-align:center;color:var(--mute);font-size:12px;padding:30px;border-top:1px solid var(--line)}
+@media(max-width:700px){
+.burger{display:block}
+.links{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;background:var(--bg);padding:14px 5%;border-bottom:1px solid var(--line)}
+.links.open{display:flex}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" onclick="go('home')"><svg class="lg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="DH logo"><defs><linearGradient id="lgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8434a"/><stop offset="1" stop-color="#9c0f16"/></linearGradient></defs><polygon points="50,3 61,14 77,11 80,27 95,34 88,49 95,64 80,71 77,87 61,84 50,97 39,84 23,87 20,71 5,64 12,49 5,34 20,27 23,11 39,14" fill="url(#lgg)"/><circle cx="50" cy="50" r="34" fill="#fff"/><circle cx="50" cy="50" r="30" fill="none" stroke="#d71920" stroke-width="1.5"/><text x="50" y="46" text-anchor="middle" font-size="21" font-weight="800" fill="#7a0c10" font-family="Arial,sans-serif" letter-spacing="2">DH</text><text x="50" y="67" text-anchor="middle" font-size="19" font-weight="700" fill="#d71920" font-family="Amiri,'Noto Naskh Arabic','Traditional Arabic',Arial,serif">مهرجان</text></svg><span>مهرجان<small>DH FESTIVAL · RESULT PORTAL</small></span></div>
+  <button class="burger" onclick="document.getElementById('lk').classList.toggle('open')">&#9776;</button>
+  <div class="links" id="lk">
+    <a data-p="home" onclick="go('home')">Home</a>
+    <a data-p="result" onclick="go('result')">Result</a>
+    <a data-p="register" onclick="go('register')">Register</a>
+    <a data-p="venues" onclick="go('venues')">Venues</a>
+    <a data-p="gallery" onclick="go('gallery')">Gallery</a>
+    <a data-p="about" onclick="go('about')">About</a>
+    <a data-p="contact" onclick="go('contact')">Contact</a>
+  </div>
+</nav>
+
+<!-- HOME / ACCESS -->
+<section class="page show" id="home">
+  <div class="hero">
+    <div class="biglogo"><svg class="lg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-label="DH logo"><defs><linearGradient id="lgg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8434a"/><stop offset="1" stop-color="#9c0f16"/></linearGradient></defs><polygon points="50,3 61,14 77,11 80,27 95,34 88,49 95,64 80,71 77,87 61,84 50,97 39,84 23,87 20,71 5,64 12,49 5,34 20,27 23,11 39,14" fill="url(#lgg)"/><circle cx="50" cy="50" r="34" fill="#fff"/><circle cx="50" cy="50" r="30" fill="none" stroke="#d71920" stroke-width="1.5"/><text x="50" y="46" text-anchor="middle" font-size="21" font-weight="800" fill="#7a0c10" font-family="Arial,sans-serif" letter-spacing="2">DH</text><text x="50" y="67" text-anchor="middle" font-size="19" font-weight="700" fill="#d71920" font-family="Amiri,'Noto Naskh Arabic','Traditional Arabic',Arial,serif">مهرجان</text></svg></div><span class="tag">ARTS FESTIVAL 2026</span>
+    <h1 class="arh">مهرجان</h1><div class="ar">DH FESTIVAL</div>
+    <p>Enter the festival password or your 3-digit chest number to open the results.</p>
+    <div class="search">
+      <input id="q" placeholder="Password  or  chest number (e.g. 301)" onkeydown="if(event.key==='Enter')enter()">
+      <button class="btn" onclick="enter()">View Result</button>
+    </div>
+    <div class="err" id="err"></div>
+    <div class="hint">Chest numbers start from 301. Not registered yet? Use the Register tab.</div>
+  </div>
+  <div class="stats" id="hs"></div>
+  <div class="t3" id="ht3"></div>
+  <div class="lb"><h3>TEAM TOTAL POINTS</h3><div id="board"></div></div>
+</section>
+
+<!-- RESULT -->
+<section class="page" id="result">
+  <button class="back" onclick="go('home')">&larr; Back</button>
+  <h2 id="rt">Programme Results</h2>
+  <p class="sub" id="rs"></p>
+  <div class="t3" id="t3"></div>
+  <div class="fl" id="fl"><button class="on" onclick="flt('All',this)">All</button><button onclick="flt('Arts',this)">Arts</button><button onclick="flt('Sports',this)">Sports</button></div>
+  <div class="grid" id="rg"></div>
+</section>
+
+<!-- REGISTER -->
+<section class="page" id="register">
+  <div class="rhero"><span class="tag">REGISTRATION</span><h2>Register Programmes</h2><p>مهرجان · DH FESTIVAL — choose your programmes and send your registration.</p></div>
+  <div class="rg">
+    <aside class="ri">
+      <h3>HOW TO REGISTER</h3>
+      <ol><li>Enter your name and chest number</li><li>Select your team</li><li>Tick the programmes you will join</li><li>Press <b>Register</b></li></ol>
+      <div class="rc"><b id="rcount">0</b><span>programmes selected</span></div>
+    </aside>
+    <div>
+      <form class="c" id="rf" onsubmit="sendReg(event)">
+        <input name="name" placeholder="Student name" required>
+        <input name="chest" placeholder="Chest number (3 digits, e.g. 301)" inputmode="numeric" pattern="\d{3}" required>
+        <select name="team" required><option value="">Select team</option><option>Team Badr</option><option>Team Uhud</option><option>Team Hira</option><option>Team Hunain</option></select>
+        <input name="phone" type="tel" placeholder="Phone number (optional)">
+        <div class="pk" id="rp"></div>
+        <button class="btn" id="rb">Register</button>
+        <div class="err" id="rm"></div>
+      </form>
+      <div id="rdone" class="rdone" style="display:none"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VENUES -->
+<section class="page" id="venues">
+  <h2>Venues</h2><p class="sub" id="vsub"></p>
+  <div class="vg vl" id="vg"></div>
+</section>
+
+<!-- GALLERY -->
+<section class="page" id="gallery">
+  <h2>Gallery</h2><p class="sub">Moments from the festival. Tap a photo to view it full size.</p>
+  <div class="tiles" id="tiles"></div>
+</section>
+
+<!-- ABOUT -->
+<section class="page about" id="about">
+  <h2>About</h2><p class="sub">DH Festival</p>
+  <p>The DH Arts Festival brings students together to showcase talent in recitation, speech, song, writing and more. This portal publishes official programme results as soon as they are declared.</p>
+  <p>Search any programme by its 3-digit number to see the winners and points.</p>
+  <div class="stats" id="as"></div>
+</section>
+
+<!-- CONTACT -->
+<section class="page" id="contact">
+  <h2>Contact</h2><p class="sub">Questions about a result? Write to the festival committee.</p>
+  <form class="c" id="cf" onsubmit="sendMsg(event)">
+    <input name="name" placeholder="Your name" required>
+    <input name="email" type="email" placeholder="Your email" required>
+    <textarea name="message" rows="5" placeholder="Message" required></textarea>
+    <button class="btn" id="sb">Send Message</button>
+    <div class="err" id="cm"></div>
+  </form>
+  <p class="sub" style="margin-top:24px">Phone: <a href="tel:+917864264007" style="color:var(--gold)">7864264007</a> &nbsp;|&nbsp; Email: <a href="mailto:sirajsiru4007@gmail.com" style="color:var(--gold)">sirajsiru4007@gmail.com</a></p>
+</section>
+
+<div id="lb" onclick="this.classList.remove('on')"><b>&times;</b><img id="lbi" alt=""></div>
+<footer>&copy; 2026 DH FESTIVAL. All rights reserved.</footer>
+
+<script>
+// ---- EDIT YOUR RESULTS HERE ----
+// Winner format: ["Name","Team",points,"photo/file.jpg"]  (photo is optional; initials show if empty)
+const FEST="DH FESTIVAL";
+const P=[
+ {type:"Arts",no:"101",name:"Quran Recitation",cat:"Senior",w:[["Muhammad Shafi","Team Hunain",5],["Ahmed Nihal","Team Uhud",3],["Faris K","Team Badr",1]]},
+ {type:"Arts",no:"102",name:"Hifz Competition",cat:"Junior",w:[["Rashid P","Team Uhud",5],["Anas V","Team Hunain",3],["Salman T","Team Badr",1]]},
+ {type:"Arts",no:"103",name:"Speech (Malayalam)",cat:"Senior",w:[["Jasir M","Team Hira",5],["Safwan C","Team Badr",3],["Nabeel A","Team Hunain",1]]},
+ {type:"Arts",no:"104",name:"Madh Song",cat:"Junior",w:[["Ameen K","Team Hunain",5],["Shahid P","Team Hira",3],["Irfan M","Team Uhud",1]]},
+ {type:"Arts",no:"105",name:"Essay Writing",cat:"Senior",w:[["Hashim V","Team Uhud",5],["Unais T","Team Hunain",3],["Riyas N","Team Hira",1]]},
+ {type:"Arts",no:"106",name:"Calligraphy",cat:"Junior",w:[["Zayan K","Team Hira",5],["Adil M","Team Uhud",3],["Yasin P","Team Hunain",1]]},
+ {type:"Arts",no:"107",name:"Poetry Recitation",cat:"Senior",w:[["Sinan P","Team Hunain",5],["Mishab K","Team Hira",3],["Basheer T","Team Uhud",1]]},
+ {type:"Arts",no:"108",name:"Quiz Competition",cat:"Group",w:[["Team Hira","Team Hira",5],["Team Hunain","Team Hunain",3],["Team Badr","Team Badr",1]]},
+ {type:"Arts",no:"109",name:"Arabic Speech",cat:"Senior",w:[["Thanseer M","Team Uhud",5],["Fahad V","Team Badr",3],["Jabir A","Team Hunain",1]]},
+ {type:"Arts",no:"110",name:"Duff / Daff Muttu",cat:"Group",w:[["Team Hunain","Team Hunain",5],["Team Hira","Team Hira",3],["Team Uhud","Team Uhud",1]]},
+ {type:"Sports",no:"201",name:"100m Race",cat:"Senior",w:[["Ashiq K","Team Hira",5],["Muneer P","Team Hunain",3],["Rafi T","Team Uhud",1]]},
+ {type:"Sports",no:"202",name:"100m Race",cat:"Junior",w:[["Fayiz M","Team Badr",5],["Niyas V","Team Uhud",3],["Hadi C","Team Hunain",1]]},
+ {type:"Sports",no:"203",name:"Long Jump",cat:"Senior",w:[["Shamil A","Team Hunain",5],["Ihsan K","Team Hira",3],["Arshad P","Team Badr",1]]},
+ {type:"Sports",no:"204",name:"High Jump",cat:"Junior",w:[["Zahid T","Team Hira",5],["Mubashir N","Team Hunain",3],["Ajmal M","Team Uhud",1]]},
+ {type:"Sports",no:"205",name:"Shot Put",cat:"Senior",w:[["Nazeer V","Team Badr",5],["Habeeb K","Team Uhud",3],["Sahal P","Team Hunain",1]]},
+ {type:"Sports",no:"206",name:"Football",cat:"Team",w:[["Team Hunain","Team Hunain",5],["Team Badr","Team Badr",3],["Team Hira","Team Hira",1]]},
+ {type:"Sports",no:"207",name:"Volleyball",cat:"Team",w:[["Team Hira","Team Hira",5],["Team Hunain","Team Hunain",3],["Team Badr","Team Badr",1]]},
+ {type:"Sports",no:"208",name:"Relay 4x100m",cat:"Team",w:[["Team Badr","Team Badr",5],["Team Hira","Team Hira",3],["Team Hunain","Team Hunain",1]]},
+ {type:"Sports",no:"209",name:"Tug of War",cat:"Team",w:[["Team Hunain","Team Hunain",5],["Team Badr","Team Badr",3],["Team Hira","Team Hira",1]]}
+];
+function board(){
+  const t={};P.forEach(p=>p.w.forEach(w=>t[w[1]]=(t[w[1]]||0)+w[2]));
+  const r=Object.entries(t).sort((a,b)=>b[1]-a[1]),max=r[0]?r[0][1]:1;
+  document.getElementById("board").innerHTML=r.map((x,i)=>`<div class="tr"><div class="rk ${i<3?'m'+(i+1):''}">${i+1}</div><div class="nm">${x[0]}</div><div class="bar"><i style="width:${x[1]/max*100}%"></i></div><div class="pt">${x[1]}<small>POINTS</small></div></div>`).join("");
+}
+// Points by position: 1st = 30, 2nd = 20, 3rd = 10 (applied automatically to every programme)
+// ---- VENUES: edit the venue name for each programme number ----
+const VENUE={"101":"Main Stage","102":"Main Stage","103":"Hall A","104":"Main Stage","105":"Hall B","106":"Hall B","107":"Hall A","108":"Seminar Hall","109":"Hall A","110":"Main Stage",
+"201":"Main Ground","202":"Main Ground","203":"Jump Pit","204":"Jump Pit","205":"Throw Area","206":"Football Ground","207":"Volleyball Court","208":"Main Ground","209":"Main Ground"};
+P.forEach(p=>p.venue=VENUE[p.no]||"TBA");
+// Total registered students (edit this number)
+const STUDENTS=300;
+// Show "100+" programmes (add more programmes to P above as results come in)
+const PROG_LABEL="100+";
+function stats(){
+  const teams=new Set(),ven=new Set();
+  P.forEach(p=>{ven.add(p.venue);p.w.forEach(w=>teams.add(w[1]))});
+  const h=`<div><b>${PROG_LABEL}</b>Programmes</div><div><b>${ven.size}</b>Venues</div><div><b>${STUDENTS}</b>Students</div><div><b>${teams.size}</b>Teams</div>`;
+  document.getElementById("hs").innerHTML=h;document.getElementById("as").innerHTML=h;
+  document.getElementById("vsub").textContent=ven.size+" venues · "+P.length+" programmes";
+  document.getElementById("vg").innerHTML=[...ven].map(v=>{const l=P.filter(p=>p.venue===v);return `<div><b>&#128205; ${v}</b><small>${l.length} programme${l.length>1?'s':''}</small><ul>${l.map(p=>`<li onclick="openProg('${p.no}')"><span>#${p.no}</span> ${p.name} <em>${p.cat}</em></li>`).join("")}</ul></div>`}).join("");
+}
+stats();
+// Chest numbers: each student gets a number starting from 301 (edit CHEST to set your own)
+const CHEST={};let _n=301;P.forEach(p=>p.w.forEach(w=>{if(w[0]!==w[1]&&!CHEST[w[0]])CHEST[w[0]]=_n++}));
+const POINTS=[30,20,10];
+P.forEach(p=>p.w.forEach((w,i)=>w[2]=POINTS[i]));
+board();
+top3(null,"ht3");
+const pages=["home","result","register","venues","gallery","about","contact"];
+const MAIL="sirajsiru4007@gmail.com";
+// EmailJS (sends FROM your Gmail TO your Gmail). Fill these 3 after setup, see steps in chat.
+const EJS_SERVICE="",EJS_TEMPLATE="",EJS_KEY="";
+async function sendMsg(e){
+  e.preventDefault();
+  const f=e.target,m=document.getElementById("cm"),b=document.getElementById("sb"),d=Object.fromEntries(new FormData(f));
+  b.disabled=true;b.textContent="Sending...";m.style.color="var(--mute)";m.textContent="";
+  try{
+    if(EJS_SERVICE&&EJS_TEMPLATE&&EJS_KEY){
+      const q=await fetch("https://api.emailjs.com/api/v1.0/email/send",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({service_id:EJS_SERVICE,template_id:EJS_TEMPLATE,user_id:EJS_KEY,template_params:{to_email:MAIL,from_name:d.name,reply_to:d.email,message:d.message}})});
+      if(!q.ok)throw 0;
+      m.style.color="#1a7f4b";m.textContent="Message sent successfully. Thank you!";f.reset();b.disabled=false;b.textContent="Send Message";return;
+    }
+    const r=await fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
+      body:JSON.stringify({name:d.name,email:d.email,message:d.message,_subject:"DH FESTIVAL Portal - Message from "+d.name,_replyto:d.email,_template:"table"})});
+    const j=await r.json();
+    if(!r.ok||j.success==="false")throw 0;
+    m.style.color="#1a7f4b";m.textContent="Message sent successfully. Thank you!";f.reset();
+  }catch(x){
+    m.style.color="#b00020";m.textContent="Could not send automatically. Opening your email app instead...";
+    location.href="mailto:"+MAIL+"?subject="+encodeURIComponent("Message from "+d.name)+"&body="+encodeURIComponent(d.message+"\n\nFrom: "+d.name+" ("+d.email+")");
+  }
+  b.disabled=false;b.textContent="Send Message";
+}
+document.getElementById("rp").innerHTML="<h4>SELECT PROGRAMMES</h4>"+P.map(p=>`<label class="ck"><input type="checkbox" name="prog" value="#${p.no} ${p.name} (${p.cat})"> #${p.no} ${p.name} &middot; ${p.cat}</label>`).join("");
+async function sendReg(e){
+  e.preventDefault();
+  const f=e.target,m=document.getElementById("rm"),b=document.getElementById("rb"),fd=new FormData(f),d=Object.fromEntries(fd),pr=fd.getAll("prog");
+  if(!pr.length){m.style.color="#b00020";m.textContent="Please select at least one programme.";return}
+  b.disabled=true;b.textContent="Sending...";m.style.color="var(--mute)";m.textContent="";
+  const msg="Chest: "+d.chest+"\nTeam: "+d.team+"\nPhone: "+(d.phone||"-")+"\nProgrammes:\n"+pr.join("\n");
+  try{
+    const r=await fetch("https://formsubmit.co/ajax/"+MAIL,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
+      body:JSON.stringify({name:d.name,message:msg,_subject:"Programme Registration - "+d.name+" (Chest "+d.chest+")",_template:"table"})});
+    const j=await r.json();
+    if(!r.ok||j.success==="false")throw 0;
+    document.getElementById("rdone").innerHTML=`<div class="ok">&#10003;</div><h3>Registration sent!</h3><p class="sub">${d.name} &middot; Chest ${d.chest} &middot; ${d.team}</p><p style="color:var(--mute);line-height:1.8">${pr.join("<br>")}</p><button class="btn" onclick="regAgain()">Register another student</button>`;f.style.display="none";document.getElementById("rdone").style.display="block";f.reset();updCount();
+  }catch(x){
+    m.style.color="#b00020";m.textContent="Could not send automatically. Opening your email app instead...";
+    location.href="mailto:"+MAIL+"?subject="+encodeURIComponent("Programme Registration - "+d.name)+"&body="+encodeURIComponent(d.name+"\n"+msg);
+  }
+  b.disabled=false;b.textContent="Register";
+}
+function updCount(){document.getElementById("rcount").textContent=document.querySelectorAll("#rp input:checked").length}
+document.getElementById("rp").addEventListener("change",updCount);
+function regAgain(){document.getElementById("rdone").style.display="none";document.getElementById("rf").style.display="grid";scrollTo(0,0)}
+function openProg(n){document.getElementById("q").value=n;enter()}
+function go(p){
+  if(p==="result"&&!cur.length){p="home";const e=document.getElementById("err");e.textContent="Enter the password or your chest number to view the results."}
+  pages.forEach(x=>document.getElementById(x).classList.remove("show"));
+  document.getElementById(p).classList.add("show");
+  document.querySelectorAll(".links a").forEach(a=>a.classList.toggle("on",a.dataset.p===p));
+  document.getElementById("lk").classList.remove("open");
+  scrollTo(0,0);
+  try{if(location.hash!=="#"+p)location.hash=p}catch(x){}
+}
+window.addEventListener("hashchange",()=>{const h=location.hash.slice(1);if(pages.includes(h)&&!document.getElementById(h).classList.contains("show"))go(h)});
+function ini(n){return n.split(" ").map(w=>w[0]).slice(0,2).join("").toUpperCase()}
+function card(x){
+  return `<div class="card"><div class="no">#${x.no}</div><h3>${x.name}</h3><div class="cat">${x.type} · ${x.cat}</div><div class="vn">&#128205; ${x.venue}</div>`+
+  x.w.map((w,i)=>`<div class="win"><div class="medal m${i+1}">${i+1}</div><div class="av">${w[3]?`<img src="${w[3]}" alt="${w[0]}" onerror="this.parentNode.textContent='${ini(w[0])}'">`:ini(w[0])}</div><span>${w[0]}${CHEST[w[0]]?' <em class="ch">#'+CHEST[w[0]]+'</em>':''}<br><small style="color:var(--mute)">${w[1]}</small></span><b>${w[2]}</b></div>`).join("")+`</div>`;
+}
+let cur=[];
+function top3(type,target){target=target||"t3";
+  const t={};
+  P.filter(p=>!type||p.type===type).forEach(p=>p.w.forEach(w=>{if(w[0]===w[1])return;const k=w[0];t[k]=t[k]||{n:k,team:w[1],pt:0,ph:w[3]||"",c:0};t[k].pt+=w[2];t[k].c++;if(w[3])t[k].ph=w[3]}));
+  const r=Object.values(t).sort((a,b)=>b.pt-a.pt||b.c-a.c).slice(0,3),bd=["GOLD","SILVER","BRONZE"];
+  document.getElementById(target).innerHTML='<h3>TOP 3 BEST STUDENTS'+(type?" · "+type.toUpperCase():"")+'</h3><div class="pd">'+r.map((x,i)=>`<div class="pc ${i?'':'r1'}"><span class="bd m${i+1}">${i+1} &middot; ${bd[i]}</span><div class="av">${x.ph?`<img src="${x.ph}" alt="${x.n}" onerror="this.parentNode.textContent='${ini(x.n)}'">`:ini(x.n)}</div><b>${x.n}</b><small>${x.team}</small><em>${x.pt} pts</em></div>`).join("")+'</div>';
+}
+
+function flt(t,b){document.querySelectorAll('#fl button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ if(cur===P)top3(t==='All'?null:t);
+ document.getElementById('rg').innerHTML=(cur.filter(p=>t==='All'||p.type===t).map(card).join(''))||'<p class="sub">No results.</p>'}
+function fshow(v){document.getElementById('t3').style.display=v?'block':'none';if(v)top3();const f=document.getElementById('fl');f.style.display=v?'flex':'none';f.querySelectorAll('button').forEach((b,i)=>b.classList.toggle('on',i===0))}
+function enter(){
+  const v=document.getElementById("q").value.trim(),e=document.getElementById("err");
+  const isFest=["MAHARJANFEST"].includes(v.toUpperCase().replace(/[\s.]/g,"")), isNum=/^\d{3}$/.test(v);
+  if(!isFest&&!isNum){e.textContent="Wrong password. Enter MAHARJAN.FEST or a 3-digit chest number.";return}
+  e.textContent="";
+  const t=document.getElementById("rt"),s=document.getElementById("rs"),g=document.getElementById("rg");
+  if(isFest){t.textContent=FEST+" - All Results";s.textContent=P.length+" programmes declared";cur=P;g.innerHTML=P.map(card).join("");fshow(true)}
+  else{
+    const stu=Object.keys(CHEST).find(n=>String(CHEST[n])===v);
+    if(stu){
+      const l=P.filter(p=>p.w.some(w=>w[0]===stu));
+      t.textContent=stu+" · Chest "+v;s.textContent=l.length+" programme"+(l.length>1?"s":"")+" placed";cur=l;g.innerHTML=l.map(card).join("");fshow(false);
+    }else{
+      const x=P.find(p=>p.no===v);
+      if(!x){e.textContent="No result found for number "+v+".";return}
+      t.textContent="Programme "+v;s.textContent=FEST;cur=[x];g.innerHTML=card(x);fshow(false);
+    }
+  }
+  go("result");
+}
+// ---- GALLERY: add your own photos here (file name or full URL) ----
+const IMAGES=[
+ {src:"",t:"Opening Ceremony"},{src:"",t:"Quran Recitation"},{src:"",t:"Stage Programme"},
+ {src:"",t:"Prize Distribution"},{src:"",t:"Team Badr"},{src:"",t:"Team Uhud"}
+];
+const cl=[["#d71920","#5a070b"],["#ff5a5f","#8a1015"],["#b3121a","#3d0407"],["#e8434a","#7a0c10"]];
+function art(i){const c=cl[i%4];
+ const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='${c[0]}'/><stop offset='1' stop-color='${c[1]}'/></linearGradient></defs><rect width='400' height='300' fill='url(#g)'/><g fill='none' stroke='#fff' stroke-opacity='.22' stroke-width='1.5'>${[...Array(5)].map((_,k)=>`<circle cx='200' cy='150' r='${30+k*28}'/>`).join("")}<path d='M200 20L220 130L330 150L220 170L200 280L180 170L70 150L180 130Z' stroke-opacity='.45'/></g><path d='M170 190h60v-40q0-30-30-45q-30 15-30 45z' fill='#fff' fill-opacity='.9'/><circle cx='200' cy='92' r='6' fill='#fff'/></svg>`;
+ return "data:image/svg+xml;utf8,"+encodeURIComponent(svg)}
+document.getElementById("tiles").innerHTML=IMAGES.map((m,i)=>{const u=m.src||art(i);
+ return `<div class="tile" onclick="document.getElementById('lbi').src=this.querySelector('img').src;document.getElementById('lb').classList.add('on')"><img src="${u}" alt="${m.t}" loading="lazy"><span>${m.t}</span></div>`}).join("");
+document.querySelector('[data-p="home"]').classList.add("on");
+if(pages.includes(location.hash.slice(1)))go(location.hash.slice(1));
+</script>
+</body>
+</html>
