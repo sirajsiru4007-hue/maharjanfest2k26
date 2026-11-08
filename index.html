@@ -110,7 +110,7 @@ nav a.on,nav a:hover{background:#f5f8f6;color:#17302a}
 .herogrid{display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:center}
 .mainh{font:800 clamp(46px,8vw,88px)/1.02 "Plus Jakarta Sans","Trebuchet MS",sans-serif;letter-spacing:-.04em;margin:0 0 14px;color:#0e1a17}
 .grn{background:linear-gradient(90deg,#0b6b52,#22d37a);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 14px rgba(34,211,122,.45))}
-.subh{font:400 22px/1.5 "Plus Jakarta Sans","Trebuchet MS",sans-serif;letter-spacing:-.01em;color:#3d514b;margin:0 0 16px;max-width:none}
+.subh{font:700 22px/1.5 "Plus Jakarta Sans","Trebuchet MS",sans-serif;letter-spacing:-.01em;color:#3d514b;margin:0 0 16px;max-width:none}
 .cta{margin-top:18px;background:#00d983;color:#0e1a17;border:1px solid #00a566;border-radius:4px;padding:14px 22px;font:700 16px "Plus Jakarta Sans","Trebuchet MS",sans-serif}
 .cta:hover{background:#0be690}
 .stage{--s:clamp(190px,30vw,320px);perspective:1100px;display:grid;place-items:center;height:calc(var(--s)*1.45);position:relative}
@@ -161,6 +161,10 @@ textarea{width:100%;min-height:110px;padding:10px;border:1px solid var(--line);b
 .msg p{margin:6px 0 10px;white-space:pre-wrap;word-break:break-word}
 .when{color:var(--mut);font-size:13px}
 h3{font-size:18px;margin:22px 0 10px}
+.badge{display:inline-block;min-width:22px;padding:1px 7px;margin-left:6px;border-radius:11px;background:var(--hot);color:#1d2a2a;font:800 13px "Trebuchet MS",sans-serif;text-align:center}
+.subh{font:700 20px/1.6 "Plus Jakarta Sans","Trebuchet MS",sans-serif;letter-spacing:.14em;word-spacing:.35em;color:#3d514b}
+.logo{cursor:pointer}
+.logo:focus-visible span{outline:3px solid var(--hot);outline-offset:2px}
 </style>
 </head>
 <body class="locked">
@@ -168,7 +172,7 @@ h3{font-size:18px;margin:22px 0 10px}
 <input id="gpw" type="password" autocomplete="off" placeholder="Enter Password" aria-label="Password">
 <div class="err" id="gerr"></div><div class="row"><button id="gbtn">Open site</button></div></div></div>
 <header><div class="bar">
-<div class="logo"><span>WAFD MATES</span></div>
+<div class="logo" id="logoHome" role="link" tabindex="0" aria-label="Go to Home"><span>WAFD MATES</span></div>
 <nav id="nav">
 <a data-p="home">Home</a><a data-p="gallery">Gallery</a>
 <a data-p="core">Core Committee</a><a data-p="sub">Sub-Committee</a><a data-p="members">Members</a><a data-p="message">Message</a>
@@ -178,7 +182,7 @@ h3{font-size:18px;margin:22px 0 10px}
 <section class="page" id="home"><div class="hero"><div class="herogrid">
 <div class="herotext">
 <div class="titlerow"><h1 class="mainh">WAFD<br><span class="grn">MATES</span></h1><div class="stage" role="img" aria-label="3D model: 39th batch"><div class="tilt"><div class="num3d"></div></div><div class="shade"></div></div></div>
-<p class="subh">Wholehearted Active Friends for Da’wah</p>
+<p class="subh">WHOLE HEARTED ACTIVE FRIENDS FOR DA’WA</p>
 <div class="about">
 <p>WAFD MATES is the name of the 39th batch of Darul Huda Islamic University (DHIU).</p>
 <p>The batch consists of 45 students guided by two respected teachers:</p>
@@ -202,7 +206,7 @@ h3{font-size:18px;margin:22px 0 10px}
 </main>
 
 <script>
-const PASS={ADMIN:"siru@vt",MEMBERS:"members.in"};
+const PASS={ADMIN:"seru@vt",MEMBERS:"members.in"};
 let role=null; // set after sign in
 const SB_URL="", SB_KEY=""; // paste your Supabase Project URL and anon key here
 const CLOUD=!!(SB_URL&&SB_KEY), SB_KEYS=["sub2","hubs","core","gallery","members","messages"];
@@ -250,6 +254,14 @@ function addEye(inp){
   b.onclick=()=>{const hide=inp.type==="password";inp.type=hide?"text":"password";b.innerHTML=hide?EYEOFF:EYE;b.setAttribute("aria-label",hide?"Hide password":"Show password")};
   w.appendChild(b);
 }
+function tapConfirm(b,fn){
+  b.dataset.label=b.textContent;
+  b.onclick=()=>{
+    if(b.dataset.arm){fn();return}
+    b.dataset.arm="1";b.textContent="Tap again to confirm";b.style.background="#7a1008";
+    setTimeout(()=>{if(b.isConnected){delete b.dataset.arm;b.textContent=b.dataset.label;b.style.background=""}},3500);
+  };
+}
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
 function show(p){
@@ -282,7 +294,7 @@ function render(key,boxId,title){
       if(!ad||!n||!c){box.querySelector("#e-"+key).textContent="Fill in Ad. No, Name and Class & Div.";return}
       const l=store.get(key);l.push({ad,name:n,club:c});store.set(key,l);render(key,boxId,title);
     };
-    box.querySelectorAll(".del").forEach(b=>b.onclick=()=>{if(!confirm("Remove this entry? This cannot be undone."))return;const l=store.get(key);l.splice(+b.dataset.i,1);store.set(key,l);render(key,boxId,title)});
+    box.querySelectorAll(".del").forEach(b=>tapConfirm(b,()=>{const l=store.get(key);l.splice(+b.dataset.i,1);store.set(key,l);render(key,boxId,title)}));
   }
 }
 
@@ -297,7 +309,7 @@ function renderCore(boxId,title){
   <div class="people">${rows.length?rows.map((r,i)=>`<div class="person">${r.img?`<img src="${r.img}" alt="${esc(r.name)}">`:`<div class="ph">${esc(r.name.charAt(0).toUpperCase())}</div>`}<h3>${esc(r.name)}</h3><p>${esc(r.role)}</p>${admin?`<button class="del" data-i="${i}">Remove</button>`:""}</div>`).join(""):`<p>No one added yet.${admin?" Add the first person above.":""}</p>`}</div>`;
   box.querySelector("#out-core").onclick=()=>{role=null;try{sessionStorage.removeItem("wafdRole")}catch(e){}renderCore(boxId,title)};
   if(!admin)return;
-  box.querySelectorAll(".del").forEach(b=>b.onclick=()=>{if(!confirm("Remove this entry? This cannot be undone."))return;const l=store.get("core");l.splice(+b.dataset.i,1);store.set("core",l);renderCore(boxId,title)});
+  box.querySelectorAll(".del").forEach(b=>tapConfirm(b,()=>{const l=store.get("core");l.splice(+b.dataset.i,1);store.set("core",l);renderCore(boxId,title)}));
   box.querySelector("#add-core").onclick=()=>{
     const n=box.querySelector("#n-core").value.trim(),r=box.querySelector("#r-core").value.trim(),f=box.querySelector("#i-core").files[0],err=box.querySelector("#e-core");
     if(!n||!r){err.textContent="Fill in Name and Role.";return}
@@ -322,7 +334,7 @@ function renderGallery(boxId,title){
   <div class="shots">${rows.length?rows.map((r,i)=>`<div class="shot"><img src="${r}" alt="Gallery photo ${i+1}" loading="lazy">${admin?`<button class="del" data-i="${i}">Remove</button>`:""}</div>`).join(""):`<p>No photos yet.${admin?" Add the first photos above.":""}</p>`}</div>`;
   box.querySelector("#out-gal").onclick=()=>{role=null;try{sessionStorage.removeItem("wafdRole")}catch(e){}renderGallery(boxId,title)};
   if(!admin)return;
-  box.querySelectorAll(".del").forEach(b=>b.onclick=()=>{if(!confirm("Remove this photo? This cannot be undone."))return;const l=store.get("gallery");l.splice(+b.dataset.i,1);store.set("gallery",l);renderGallery(boxId,title)});
+  box.querySelectorAll(".del").forEach(b=>tapConfirm(b,()=>{const l=store.get("gallery");l.splice(+b.dataset.i,1);store.set("gallery",l);renderGallery(boxId,title)}));
   box.querySelector("#add-gal").onclick=async()=>{
     const files=[...box.querySelector("#f-gal").files],err=box.querySelector("#e-gal");
     if(!files.length){err.textContent="Choose one or more photos first.";return}
@@ -372,7 +384,7 @@ function renderSub(boxId,title){
   ${hubHtml}`;
   box.querySelector("#out-sub").onclick=()=>{role=null;try{sessionStorage.removeItem("wafdRole")}catch(e){}renderSub(boxId,title)};
   if(!admin)return;
-  box.querySelectorAll(".del").forEach(b=>b.onclick=()=>{if(!confirm("Remove this entry? This cannot be undone."))return;const l=store.get("sub2");l.splice(+b.dataset.i,1);store.set("sub2",l);renderSub(boxId,title)});
+  box.querySelectorAll(".del").forEach(b=>tapConfirm(b,()=>{const l=store.get("sub2");l.splice(+b.dataset.i,1);store.set("sub2",l);renderSub(boxId,title)}));
   box.querySelector("#addhub-sub").onclick=()=>{
     const n=box.querySelector("#nh-sub").value.trim().toUpperCase(),err=box.querySelector("#e-sub");
     if(!n){err.textContent="Type the new hub name.";return}
@@ -416,7 +428,7 @@ function renderMessage(boxId,title){
   let body;
   if(admin){
     const inbox=all.filter(m=>m.by!=="Admin").reverse();
-    const tabs=`<div class="row"><button class="alt ${msgTab==="reach"?"on":""}" data-tab="reach">Reach message</button><button class="alt ${msgTab==="sent"?"on":""}" data-tab="sent">Sent message</button></div>`;
+    const tabs=`<div class="row"><button class="alt ${msgTab==="reach"?"on":""}" data-tab="reach">Reach message${inbox.length?` <span class="badge">${inbox.length}</span>`:""}</button><button class="alt ${msgTab==="sent"?"on":""}" data-tab="sent">Sent message</button></div>`;
     body=tabs+(msgTab==="reach"?list(inbox,true,"No messages yet."):compose(false)+(fromAdmin.length?`<h3>Sent messages</h3>`+list(fromAdmin,true,""):""));
   }else{
     body=`<p class="small2">Your message goes to the admin only.</p>`+compose(true)+(fromAdmin.length?`<h3>Messages from admin</h3>`+list(fromAdmin,false,""):"");
@@ -425,7 +437,7 @@ function renderMessage(boxId,title){
   box.querySelector("#out-msg").onclick=()=>{role=null;try{sessionStorage.removeItem("wafdRole")}catch(e){}renderMessage(boxId,title)};
   box.querySelector("#ref-msg").onclick=()=>syncCloud();
   box.querySelectorAll("[data-tab]").forEach(t=>t.onclick=()=>{msgTab=t.dataset.tab;renderMessage(boxId,title)});
-  box.querySelectorAll(".del").forEach(b=>b.onclick=()=>{if(!confirm("Delete this message? This cannot be undone."))return;const l=store.get("messages");l.splice(+b.dataset.i,1);store.set("messages",l);renderMessage(boxId,title)});
+  box.querySelectorAll(".del").forEach(b=>tapConfirm(b,()=>{const l=store.get("messages");l.splice(+b.dataset.i,1);store.set("messages",l);renderMessage(boxId,title)}));
   const send=box.querySelector("#msend");
   if(send)send.onclick=async()=>{
     const e=box.querySelector("#merr"),nm=box.querySelector("#mname"),n=nm?nm.value.trim():"Admin",t=box.querySelector("#mtext").value.trim();
@@ -476,6 +488,7 @@ show((location.hash||"#home").slice(1).replace(/[^a-z]/g,"")||"home");
   v.innerHTML="<i class='a'></i><i class='b'></i><i class='c'></i><i class='d'></i><i class='e'></i><i class='f'></i>";host.appendChild(v)})))}
 document.getElementById("respBtn").onclick=()=>show("message");
 (()=>{const h=document.querySelector(".mainh");let tm;h.addEventListener("touchstart",()=>{h.classList.add("glow");clearTimeout(tm);tm=setTimeout(()=>h.classList.remove("glow"),1500)},{passive:true})})();
+{const L=document.getElementById("logoHome");L.onclick=()=>show("home");L.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();show("home")}}}
 syncCloud();
 </script>
 </body>
